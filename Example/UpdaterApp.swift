@@ -9,9 +9,14 @@ import SwiftUI
 
 @main
 struct UpdaterApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+  
+  init() {
+    Updater.shared.start()
+  }
+  
+  var body: some Scene {
+    WindowGroup {
+      ContentView()
     }
+  }
 }

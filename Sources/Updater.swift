@@ -23,7 +23,7 @@ public final class Updater {
     switch type {
     case .onDemand:
       Task {
-        try await checkForUpdate()
+        try await checkForUpdate(type: type)
       }
     case .onForeground:
       observeForegroundNotification()
@@ -48,11 +48,11 @@ public final class Updater {
     guard shouldCheckForUpdate else { return }
     UserDefaults.lastCheckedDate = Date()
     Task {
-      try? await checkForUpdate()
+      try? await checkForUpdate(type: .onForeground)
     }
   }
       
-  private func checkForUpdate() async throws {
+  private func checkForUpdate(type: UpdaterCheckType) async throws {
     let bundleId = Bundle.main.bundleIdentifier!
     let url = URL(string: "https://itunes.apple.com/lookup?bundleId=\(bundleId)")!
     let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 60)
@@ -61,7 +61,7 @@ public final class Updater {
     guard let appDetail = result.results.first else { return }
     let currentVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0"
     guard isNewer(lhs: appDetail.version, rhs: currentVersion) else { return }
-    if let skippedVersion = UserDefaults.skippedVersion, skippedVersion == appDetail.version { return }
+    if let skippedVersion = UserDefaults.skippedVersion, skippedVersion == appDetail.version, type == .onForeground { return }
     DispatchQueue.main.async { [weak self] in
       self?.presentBottomSheetIfNeeded(appDetail: appDetail)
     }
