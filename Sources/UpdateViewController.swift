@@ -185,6 +185,7 @@ class UpdaterViewController: UIViewController, UpdateAvailableViewDelegate {
     updateView.update(appDetail: appDetail)
     
     view.addSubview(updateView)
+    updateView.isHidden = true
     
     NSLayoutConstraint.activate([
       updateView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -Constant.spacing),
@@ -196,6 +197,7 @@ class UpdaterViewController: UIViewController, UpdateAvailableViewDelegate {
       guard let this = self else { return }
       this.updateView.setGradientBorder(width: 1, colors: [UIColor.lightGray.withAlphaComponent(0.3), UIColor.lightGray, UIColor.lightGray.withAlphaComponent(0.3)])
       this.updateView.transform = CGAffineTransform(translationX: 0, y: this.updateView.frame.height)
+      this.updateView.isHidden = false
       UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
         this.updateView.transform = CGAffineTransform.identity
         this.view.backgroundColor = UIColor.systemGray.withAlphaComponent(0.3)
