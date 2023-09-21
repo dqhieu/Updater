@@ -30,6 +30,10 @@ public final class Updater {
     }
   }
   
+  public func clearLastCheckedDate() {
+    UserDefaults.lastCheckedDate = nil
+  }
+  
   private func observeForegroundNotification() {
     NotificationCenter.default.addObserver(self, selector: #selector(onForegroundNotification), name: UIApplication.didBecomeActiveNotification, object: nil)
   }

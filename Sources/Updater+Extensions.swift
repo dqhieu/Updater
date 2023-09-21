@@ -27,7 +27,6 @@ extension UIFont {
   }
 }
 
-
 extension UIView {
   
   private static let kLayerNameGradientBorder = "GradientBorderLayer"
